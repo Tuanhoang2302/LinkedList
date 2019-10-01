@@ -1,0 +1,146 @@
+#include<iostream>
+
+using namespace std;
+
+struct Node{
+    int data;
+    Node *next;
+
+    Node (int k = 0, Node *n = NULL){
+        data = k;
+        next = n;
+    }
+};
+
+int dem_phan_tu(Node* head){
+    int dem = 0;
+    for(Node* i = head; i != NULL; i = i -> next){
+        dem++;
+    }
+    return dem;
+}
+
+void display(Node* head){
+    for(Node* i = head; i != NULL; i = i -> next){
+        cout << i -> data << " ";
+    }
+    cout << endl;
+}
+
+//---------------------------------------------------------
+
+Node* traverse_current(Node* head, int pos){
+    Node* copy_head = head;
+    for(int dem = 1; dem < pos; dem++){
+        copy_head = copy_head -> next;
+    }
+    return copy_head;
+}
+
+Node* addfirst(Node* head, int value){
+    Node* newNode = new Node;
+    newNode->data= value;
+    newNode->next = NULL;
+
+    newNode -> next = head;
+    head = newNode;
+
+    return head;
+}
+
+Node* addlast(Node* head, int value){
+    Node* newNode = new Node(value);
+    int so_luong = dem_phan_tu(head);
+    Node* currentNode = traverse_current(head, so_luong);
+
+    currentNode->next = newNode;
+
+    return head;
+}
+
+Node* add_random_before(Node* head,int pos, int value){
+    int n = dem_phan_tu(head);
+    if(pos == 1){
+        head = addfirst(head, value);
+        return head;
+    }else if(pos == n + 1){
+        head = addlast(head, value);
+        return head;
+    }else{
+        Node* newnode = new Node(value);
+        Node* p = traverse_current(head, pos - 1);
+
+        newnode->next = p->next;
+        p->next = newnode;
+
+        return head;
+    }
+}
+
+Node* add_random_after(Node* head, int pos, int value){
+    int n = dem_phan_tu(head);
+    if(pos == n){
+        head = addlast(head, value);
+        return head;
+    }else{
+        Node* newnode = new Node(value);
+        Node* p = traverse_current(head, pos);
+
+        newnode->next = p->next;
+        p->next = newnode;
+
+        return head;
+    }
+}
+
+//-------------------------------------------------------------
+Node* deleteFirst(Node* head){
+    head = head->next;
+    return head;
+}
+
+Node* deleteLast(Node* head){
+    int soluong = dem_phan_tu(head);
+    Node* preNode = traverse_current(head, soluong - 1);
+    preNode->next = NULL;
+
+    return head;
+}
+
+Node* deleteRandom(Node* head, int pos){
+    int n = dem_phan_tu(head);
+    if(pos == 1){
+        head = deleteFirst(head);
+        return head;
+    } else if(pos == n){
+        head = deleteLast(head);
+        return head;
+    } else{
+        Node* preNode = traverse_current(head, pos - 1);
+        preNode -> next = preNode -> next -> next;
+        return head;
+    }
+}
+
+int main(){
+    Node* head = NULL;
+    Node* tail = NULL;
+
+    int n = 0;
+    cout << "nhap so phan tu: ";
+    cin >> n;
+    for(int i = 0; i < n; i++){
+        int m = 0;
+        cout << "nhap phan tu thu " << i + 1 << " : ";
+        cin >> m;
+        Node *p = new Node(m);
+        if(head == NULL){
+            head = tail = p;
+        }
+        else{
+            tail->next = p;
+            tail = p;
+        }
+    }
+
+}
