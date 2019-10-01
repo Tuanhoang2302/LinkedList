@@ -41,18 +41,23 @@ Node* addfirst(Node* head, int value){
     Node* newNode = new Node;
     newNode->data= value;
     newNode->next = NULL;
+    
+    if(head == NULL){
+        head = newNode; 
+        return head;
+    } else{
+        newNode -> next = head;
+        head = newNode;
 
-    newNode -> next = head;
-    head = newNode;
-
-    return head;
+        return head;
+    }
 }
 
 Node* addlast(Node* head, int value){
     Node* newNode = new Node(value);
     int so_luong = dem_phan_tu(head);
     Node* currentNode = traverse_current(head, so_luong);
-
+    cout << currentNode->data;
     currentNode->next = newNode;
 
     return head;
@@ -142,5 +147,7 @@ int main(){
             tail = p;
         }
     }
+
+    head = addlast(head, 9);
 
 }
